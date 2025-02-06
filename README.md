@@ -18,7 +18,7 @@ A Python-based tool for dumping and managing browser cookies across Chrome, Fire
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/browser-hacking.git
+git clone https://github.com/phantom-kali/browser-hacking.git
 cd browser-hacking
 ```
 
