@@ -18,8 +18,8 @@ A Python-based tool for dumping and managing browser cookies across Chrome, Fire
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/browser-cookie-dumper.git
-cd browser-cookie-dumper
+git clone https://github.com/yourusername/browser-hacking.git
+cd browser-hacking
 ```
 
 2. Install required dependencies:
