@@ -63,7 +63,33 @@ class CookieManager:
         """Get the encryption key for Chrome/Brave cookies"""
         if sys.platform == 'linux':
             return keyring.get_password('chrome_cookies', 'chrome_cookies')
-        # Add Windows and MacOS support here if needed
+        elif sys.platform == 'win32':
+            import win32crypt
+            path = os.path.join(os.environ['LOCALAPPDATA'], 
+                              'Google', 'Chrome', 'User Data', 'Local State')
+            if self.browser == 'brave':
+                path = os.path.join(os.environ['LOCALAPPDATA'],
+                                  'BraveSoftware', 'Brave-Browser', 'User Data', 'Local State')
+            
+            with open(path, 'r', encoding='utf-8') as f:
+                local_state = json.loads(f.read())
+            encrypted_key = base64.b64decode(local_state['os_crypt']['encrypted_key'])[5:]
+            return win32crypt.CryptUnprotectData(encrypted_key, None, None, None, 0)[1]
+            
+        elif sys.platform == 'darwin':
+            if self.browser == 'chrome':
+                key_label = 'Chrome Safe Storage'
+            else:  # brave
+                key_label = 'Brave Safe Storage'
+            
+            cmd = ['security', 'find-generic-password',
+                   '-w', '-a', 'Chrome', '-s', key_label]
+            import subprocess
+            try:
+                key = subprocess.check_output(cmd, stderr=subprocess.DEVNULL)
+                return key.strip()
+            except:
+                return None
         return None
 
     def get_cookies(self, domain):
